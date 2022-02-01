@@ -1,14 +1,18 @@
 package main
 
 import (
-	"log"
+	"flag"
 
 	"github.com/bwilczynski/home-api/server"
 )
 
+var (
+	port = flag.Int("port", 50051, "The server port")
+)
+
 func main() {
-	log.Printf("Starting lights server.")
+	flag.Parse()
 
 	s := server.NewServer()
-	s.Run()
+	s.Run(*port)
 }

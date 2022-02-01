@@ -17,12 +17,13 @@ func NewServer() *homeApiServer {
 	return &homeApiServer{}
 }
 
-func (s *homeApiServer) Run() {
-	port := 8000
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", port))
+func (s *homeApiServer) Run(port int) {
+	addr := fmt.Sprintf("localhost:%d", port)
+	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
+	log.Printf("Started GRPC server on %v", addr)
 
 	grpcServer := grpc.NewServer()
 	reflection.Register(grpcServer)
