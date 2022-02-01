@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "github.com/bwilczynski/home-api/server/lights";
+
+message Light {
+    string name = 1;
+}
+
+message LightList {
+    repeated Light lights = 1;
+}
+
+message ListQuery {
+}
+
+service LightService {
+    rpc List(ListQuery) returns (LightList) {}
+}
