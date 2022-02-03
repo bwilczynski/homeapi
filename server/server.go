@@ -11,10 +11,20 @@ import (
 )
 
 type homeApiServer struct {
+	port int
+	hue  HueConfig
 }
 
-func NewServer() *homeApiServer {
-	return &homeApiServer{}
+type HueConfig struct {
+	Host     string
+	Username string
+}
+
+func NewServer(port int, hue HueConfig) *homeApiServer {
+	return &homeApiServer{
+		port: port,
+		hue:  hue,
+	}
 }
 
 func (s *homeApiServer) Run(port int) {
@@ -27,7 +37,7 @@ func (s *homeApiServer) Run(port int) {
 
 	grpcServer := grpc.NewServer()
 	reflection.Register(grpcServer)
-	lights.RegisterLightServiceServer(grpcServer, lights.NewServer())
+	lights.RegisterLightServiceServer(grpcServer, lights.NewServer(s.hue.Host, s.hue.Username))
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
