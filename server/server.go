@@ -27,8 +27,8 @@ func NewServer(port int, hue HueConfig) *homeApiServer {
 	}
 }
 
-func (s *homeApiServer) Run(port int) {
-	addr := fmt.Sprintf("localhost:%d", port)
+func (s *homeApiServer) Run() {
+	addr := fmt.Sprintf("localhost:%d", s.port)
 	lis, err := net.Listen("tcp", addr)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

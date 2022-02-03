@@ -17,5 +17,5 @@ func main() {
 	flag.Parse()
 
 	s := server.NewServer(*port, server.HueConfig{Host: hueHost, Username: hueUsername})
-	s.Run(*port)
+	s.Run()
 }

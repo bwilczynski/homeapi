@@ -3,16 +3,39 @@ syntax = "proto3";
 option go_package = "github.com/bwilczynski/home-api/server/lights";
 
 message Light {
-    string name = 1;
+    string id = 1;
+    string name = 2;
 }
 
-message LightList {
+message ListRequest {
+}
+
+message ListResponse {
     repeated Light lights = 1;
 }
 
-message ListQuery {
+message Group {
+    string id = 1;
+    string name = 2;
+    repeated string lights = 3;
+}
+
+message ListGroupsRequest {
+}
+
+message ListGroupsResponse {
+    repeated Group groups = 1;
+}
+
+message ToggleGroupRequest {
+    string group_id = 1;
+}
+
+message ToggleGroupResponse {
 }
 
 service LightService {
-    rpc List(ListQuery) returns (LightList) {}
+    rpc List(ListRequest) returns (ListResponse);
+    rpc ListGroups(ListGroupsRequest) returns (ListGroupsResponse);
+    rpc ToggleGroup(ToggleGroupRequest) returns (ToggleGroupResponse);
 }

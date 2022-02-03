@@ -18,7 +18,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LightServiceClient interface {
-	List(ctx context.Context, in *ListQuery, opts ...grpc.CallOption) (*LightList, error)
+	List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error)
+	ListGroups(ctx context.Context, in *ListGroupsRequest, opts ...grpc.CallOption) (*ListGroupsResponse, error)
+	ToggleGroup(ctx context.Context, in *ToggleGroupRequest, opts ...grpc.CallOption) (*ToggleGroupResponse, error)
 }
 
 type lightServiceClient struct {
@@ -29,9 +31,27 @@ func NewLightServiceClient(cc grpc.ClientConnInterface) LightServiceClient {
 	return &lightServiceClient{cc}
 }
 
-func (c *lightServiceClient) List(ctx context.Context, in *ListQuery, opts ...grpc.CallOption) (*LightList, error) {
-	out := new(LightList)
+func (c *lightServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
+	out := new(ListResponse)
 	err := c.cc.Invoke(ctx, "/LightService/List", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lightServiceClient) ListGroups(ctx context.Context, in *ListGroupsRequest, opts ...grpc.CallOption) (*ListGroupsResponse, error) {
+	out := new(ListGroupsResponse)
+	err := c.cc.Invoke(ctx, "/LightService/ListGroups", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *lightServiceClient) ToggleGroup(ctx context.Context, in *ToggleGroupRequest, opts ...grpc.CallOption) (*ToggleGroupResponse, error) {
+	out := new(ToggleGroupResponse)
+	err := c.cc.Invoke(ctx, "/LightService/ToggleGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +62,9 @@ func (c *lightServiceClient) List(ctx context.Context, in *ListQuery, opts ...gr
 // All implementations must embed UnimplementedLightServiceServer
 // for forward compatibility
 type LightServiceServer interface {
-	List(context.Context, *ListQuery) (*LightList, error)
+	List(context.Context, *ListRequest) (*ListResponse, error)
+	ListGroups(context.Context, *ListGroupsRequest) (*ListGroupsResponse, error)
+	ToggleGroup(context.Context, *ToggleGroupRequest) (*ToggleGroupResponse, error)
 	mustEmbedUnimplementedLightServiceServer()
 }
 
@@ -50,8 +72,14 @@ type LightServiceServer interface {
 type UnimplementedLightServiceServer struct {
 }
 
-func (UnimplementedLightServiceServer) List(context.Context, *ListQuery) (*LightList, error) {
+func (UnimplementedLightServiceServer) List(context.Context, *ListRequest) (*ListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
+}
+func (UnimplementedLightServiceServer) ListGroups(context.Context, *ListGroupsRequest) (*ListGroupsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListGroups not implemented")
+}
+func (UnimplementedLightServiceServer) ToggleGroup(context.Context, *ToggleGroupRequest) (*ToggleGroupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ToggleGroup not implemented")
 }
 func (UnimplementedLightServiceServer) mustEmbedUnimplementedLightServiceServer() {}
 
@@ -67,7 +95,7 @@ func RegisterLightServiceServer(s grpc.ServiceRegistrar, srv LightServiceServer)
 }
 
 func _LightService_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListQuery)
+	in := new(ListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -79,7 +107,43 @@ func _LightService_List_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: "/LightService/List",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LightServiceServer).List(ctx, req.(*ListQuery))
+		return srv.(LightServiceServer).List(ctx, req.(*ListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LightService_ListGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LightServiceServer).ListGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/LightService/ListGroups",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LightServiceServer).ListGroups(ctx, req.(*ListGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _LightService_ToggleGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ToggleGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LightServiceServer).ToggleGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/LightService/ToggleGroup",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LightServiceServer).ToggleGroup(ctx, req.(*ToggleGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -94,6 +158,14 @@ var LightService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "List",
 			Handler:    _LightService_List_Handler,
+		},
+		{
+			MethodName: "ListGroups",
+			Handler:    _LightService_ListGroups_Handler,
+		},
+		{
+			MethodName: "ToggleGroup",
+			Handler:    _LightService_ToggleGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
