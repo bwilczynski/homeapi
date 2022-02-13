@@ -169,5 +169,5 @@ var LightService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "server/lights/lights.proto",
+	Metadata: "lights.proto",
 }
