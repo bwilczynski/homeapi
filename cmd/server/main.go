@@ -4,7 +4,7 @@ import (
 	"flag"
 	"os"
 
-	"github.com/bwilczynski/home-api/server"
+	"github.com/bwilczynski/homeapi"
 )
 
 var (
@@ -16,6 +16,6 @@ var (
 func main() {
 	flag.Parse()
 
-	s := server.NewServer(*port, server.HueConfig{Host: hueHost, Username: hueUsername})
+	s := homeapi.NewServer(*port, homeapi.HueConfig{Host: hueHost, Username: hueUsername})
 	s.Run()
 }

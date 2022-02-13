@@ -1,11 +1,12 @@
-package server
+package homeapi
 
 import (
 	"fmt"
 	"log"
 	"net"
 
-	"github.com/bwilczynski/home-api/server/lights"
+	"github.com/bwilczynski/homeapi/lights"
+	"github.com/bwilczynski/homeapi/lights/hue"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -37,7 +38,7 @@ func (s *homeApiServer) Run() {
 
 	grpcServer := grpc.NewServer()
 	reflection.Register(grpcServer)
-	lights.RegisterLightServiceServer(grpcServer, lights.NewServer(s.hue.Host, s.hue.Username))
+	lights.RegisterLightServiceServer(grpcServer, hue.NewServer(s.hue.Host, s.hue.Username))
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

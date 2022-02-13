@@ -1,16 +1,17 @@
-package lights
+package hue
 
 import (
 	"context"
 	"strconv"
 
 	"github.com/amimof/huego"
+	l "github.com/bwilczynski/homeapi/lights"
 )
 
 type lightsService struct {
 	bridge *huego.Bridge
 
-	UnimplementedLightServiceServer
+	l.UnimplementedLightServiceServer
 }
 
 func NewServer(host, username string) *lightsService {
@@ -21,37 +22,37 @@ func NewServer(host, username string) *lightsService {
 	return server
 }
 
-func (s *lightsService) List(ctx context.Context, req *ListRequest) (*ListResponse, error) {
+func (s *lightsService) List(ctx context.Context, req *l.ListRequest) (*l.ListResponse, error) {
 	lights, err := s.bridge.GetLightsContext(ctx)
 	if err != nil {
 		return nil, err
 	}
-	res := make([]*Light, len(lights))
+	res := make([]*l.Light, len(lights))
 	for i, light := range lights {
-		res[i] = &Light{Id: strconv.Itoa(light.ID), Name: light.Name}
+		res[i] = &l.Light{Id: strconv.Itoa(light.ID), Name: light.Name}
 	}
 
-	return &ListResponse{
+	return &l.ListResponse{
 		Lights: res,
 	}, nil
 }
 
-func (s *lightsService) ListGroups(ctx context.Context, req *ListGroupsRequest) (*ListGroupsResponse, error) {
+func (s *lightsService) ListGroups(ctx context.Context, req *l.ListGroupsRequest) (*l.ListGroupsResponse, error) {
 	groups, err := s.bridge.GetGroupsContext(ctx)
 	if err != nil {
 		return nil, err
 	}
-	res := make([]*Group, len(groups))
+	res := make([]*l.Group, len(groups))
 	for i, group := range groups {
-		res[i] = &Group{Id: strconv.Itoa(group.ID), Name: group.Name, Lights: group.Lights}
+		res[i] = &l.Group{Id: strconv.Itoa(group.ID), Name: group.Name, Lights: group.Lights}
 	}
 
-	return &ListGroupsResponse{
+	return &l.ListGroupsResponse{
 		Groups: res,
 	}, nil
 }
 
-func (s *lightsService) ToggleGroup(ctx context.Context, req *ToggleGroupRequest) (*ToggleGroupResponse, error) {
+func (s *lightsService) ToggleGroup(ctx context.Context, req *l.ToggleGroupRequest) (*l.ToggleGroupResponse, error) {
 	id, err := strconv.Atoi(req.GroupId)
 	if err != nil {
 		return nil, err
@@ -68,5 +69,5 @@ func (s *lightsService) ToggleGroup(ctx context.Context, req *ToggleGroupRequest
 		group.OnContext(ctx)
 	}
 
-	return &ToggleGroupResponse{}, nil
+	return &l.ToggleGroupResponse{}, nil
 }

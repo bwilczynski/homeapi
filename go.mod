@@ -1,4 +1,4 @@
-module github.com/bwilczynski/home-api
+module github.com/bwilczynski/homeapi
 
 go 1.17
 

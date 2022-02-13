@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "github.com/bwilczynski/home-api/server/lights";
+option go_package = "github.com/bwilczynski/homeapi/lights";
 
 message Light {
     string id = 1;
