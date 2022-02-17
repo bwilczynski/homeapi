@@ -19,4 +19,5 @@ USER vscode
 ARG PB_GEN_GO_VERSION=1.26
 ARG PB_GEN_GO_GRPC_VERSION=1.1
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v${PB_GEN_GO_VERSION} && \
-    go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v${PB_GEN_GO_GRPC_VERSION}
+    go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v${PB_GEN_GO_GRPC_VERSION} && \
+    go install github.com/fullstorydev/grpcurl/cmd/grpcurl@latest
