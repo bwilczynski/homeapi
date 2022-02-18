@@ -33,7 +33,7 @@ func NewLightServiceClient(cc grpc.ClientConnInterface) LightServiceClient {
 
 func (c *lightServiceClient) List(ctx context.Context, in *ListRequest, opts ...grpc.CallOption) (*ListResponse, error) {
 	out := new(ListResponse)
-	err := c.cc.Invoke(ctx, "/LightService/List", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/homeapi.lights.v1.LightService/List", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (c *lightServiceClient) List(ctx context.Context, in *ListRequest, opts ...
 
 func (c *lightServiceClient) ListGroups(ctx context.Context, in *ListGroupsRequest, opts ...grpc.CallOption) (*ListGroupsResponse, error) {
 	out := new(ListGroupsResponse)
-	err := c.cc.Invoke(ctx, "/LightService/ListGroups", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/homeapi.lights.v1.LightService/ListGroups", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *lightServiceClient) ListGroups(ctx context.Context, in *ListGroupsReque
 
 func (c *lightServiceClient) ToggleGroup(ctx context.Context, in *ToggleGroupRequest, opts ...grpc.CallOption) (*ToggleGroupResponse, error) {
 	out := new(ToggleGroupResponse)
-	err := c.cc.Invoke(ctx, "/LightService/ToggleGroup", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/homeapi.lights.v1.LightService/ToggleGroup", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -104,7 +104,7 @@ func _LightService_List_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/LightService/List",
+		FullMethod: "/homeapi.lights.v1.LightService/List",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(LightServiceServer).List(ctx, req.(*ListRequest))
@@ -122,7 +122,7 @@ func _LightService_ListGroups_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/LightService/ListGroups",
+		FullMethod: "/homeapi.lights.v1.LightService/ListGroups",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(LightServiceServer).ListGroups(ctx, req.(*ListGroupsRequest))
@@ -140,7 +140,7 @@ func _LightService_ToggleGroup_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/LightService/ToggleGroup",
+		FullMethod: "/homeapi.lights.v1.LightService/ToggleGroup",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(LightServiceServer).ToggleGroup(ctx, req.(*ToggleGroupRequest))
@@ -152,7 +152,7 @@ func _LightService_ToggleGroup_Handler(srv interface{}, ctx context.Context, dec
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var LightService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "LightService",
+	ServiceName: "homeapi.lights.v1.LightService",
 	HandlerType: (*LightServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

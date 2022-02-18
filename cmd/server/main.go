@@ -5,6 +5,9 @@ import (
 	"os"
 
 	"github.com/bwilczynski/homeapi"
+	"github.com/bwilczynski/homeapi/lights"
+	"github.com/bwilczynski/homeapi/lights/hue"
+	"google.golang.org/grpc"
 )
 
 var (
@@ -16,6 +19,8 @@ var (
 func main() {
 	flag.Parse()
 
-	s := homeapi.NewServer(*port, homeapi.HueConfig{Host: hueHost, Username: hueUsername})
-	s.Run()
+	s := homeapi.NewServer(*port)
+	s.Run(func(s *grpc.Server) {
+		lights.RegisterLightServiceServer(s, hue.NewServer(hueHost, hueUsername))
+	})
 }

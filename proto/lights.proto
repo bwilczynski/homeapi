@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package homeapi.lights.v1;
+
 option go_package = "github.com/bwilczynski/homeapi/lights";
 
 message Light {
