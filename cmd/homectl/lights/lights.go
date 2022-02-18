@@ -13,8 +13,7 @@ func NewLightsCmd() *cobra.Command {
 		Short: "Control lights",
 	}
 
-	lightsCmd.PersistentFlags().StringVar(&target, "target", "", "GRPC address")
-
+	lightsCmd.PersistentFlags().StringVar(&target, "target", "localhost:50051", "GRPC address")
 	lightsCmd.AddCommand(newToggleCmd(client))
 
 	return lightsCmd
