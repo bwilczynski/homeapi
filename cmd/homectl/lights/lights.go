@@ -15,6 +15,7 @@ func NewLightsCmd() *cobra.Command {
 
 	lightsCmd.PersistentFlags().StringVar(&target, "target", "localhost:50051", "GRPC address")
 	lightsCmd.AddCommand(newToggleCmd(client))
+	lightsCmd.AddCommand(newListCmd(client))
 
 	return lightsCmd
 }
